@@ -1,8 +1,24 @@
 {
+  "name": "image-search-abstraction-layer",
+  "version": "1.0.0",
+  "description": "A full stack JavaScript app for searching images and listing recent queries.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "image",
+    "search",
+    "express",
+    "mongoose",
+    "unsplash",
+    "api"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
   "dependencies": {
     "dotenv": "^17.0.1",
-    "express": "^5.1.0",
-    "mongoose": "^8.16.1",
-    "node-fetch": "^3.3.2"
+    "express": "^4.18.2",
+    "mongoose": "^8.16.1"
   }
 }
