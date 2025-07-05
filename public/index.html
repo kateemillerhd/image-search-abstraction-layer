@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search Abstraction Layer</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 1em;
+        max-width: 800px;
+        margin: auto;
+      }
+      input, button {
+        font-size: 1rem;
+        padding: 0.5em;
+        margin-right: 0.5em;
+      }
+      .results img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 0.5em;
+      }
+      .result {
+        border-bottom: 1px solide #ccc;
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Image Search Abstraction Layer</h1>
+    <form id=searchForm">
+      <input type="text" id="searchInput" placeholder="Search images..." required />
+      <input type="number" id="pageInput" placeholder="Page #" min="1" value="1" />
+      <button type ="submit">Search</button>
+    </form>
+    <div class="results" id="results"></div>
+    <script>
+      const form = document.getElementById('searchForm');
+      const input = document.getElementById('searchInput');
+      const pageInput = document.getElementById('pageInput');
+      const resultsDiv = document.getElementById('results');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const query = input.value.trim();
+        const page = parseInt(pageInput.value) || 1;
+        const res = await fetch(`/api/search/${encodeURIComponent(query)}?page=${page}`);
+        const data = await res.json();
+
+        resultsDiv.innerHTML = '';
+
+        if (Array.isArray(data)) {
+          data.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'result';
+            div.innerHTML = `
+            <a href="${item.pageUrl}" target="_blank">
+              <img src="${item.imageUrl}" alt="${item.description || 'Image'}" />
+            </a>
+            <p>${item.description}</p>
+            `;
+            resultsDiv.appendChild(div);
+          });
+        } else {
+          resultsDiv.innerHTML = `<p>Error: ${data.error || 'Something went wrong'}</p>`;
+        }
+      });
+    </script>
+  </body>
+</html>
